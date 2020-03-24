@@ -1,1 +1,0 @@
-var Aria=function(){return{expandingButton:function(a){var r="true"===a.attr("aria-expanded");a.attr("aria-expanded",!r);var t=a.attr("aria-controls");$("#"+t).attr("aria-hidden",r)}}}();
