@@ -394,3 +394,147 @@ int main()
    print(C);
 }
 ```
+
+### 9) Character Arrays and Pointer - Part 2
+
+```C
+void print(char *C)
+{
+   while(*C != '\0')
+   {
+      printf("%c", *C);
+      C++;
+   }
+   printf("\n");
+}
+
+int main()
+{
+   char C[20] = "Hello";
+   // char *C = "Hello"; --->> this string is stored as compile time constant - cannot be modified
+   print(C);
+
+   return 0;
+}
+```
+
+### 10) Pointers and 2-D (multi-dimensional) Arrays
+
+- One-dimensional array
+  
+```int A[5]```
+
+| n | 200 | 204 | 208 | 212 | 216 |
+|---|-----|-----|-----|-----|-----|
+| data |  2  |  4  |  6  |  8  | 10 |
+|-|A[0]|A[1]|A[2]|A[3]|A[4]|
+
+```C
+int *p = A
+printf("%d\n", p); // 200
+printf("%d\n", *p); // 2
+printf("%d\n", *(p + 2)); // 6
+```
+
+- Two-dimensional array
+
+```int B[2][3]```
+
+|n|400|412|
+|-|-|-|-|
+|data| 1 - 3 - 6 | 2 - 4 - 8 |
+|-|B[0]|B[1]|
+
+```C
+int (*p)[3] = B;
+
+// B = &B[0]                          == 400
+// *B = B[0] = &B[0][0]               == 1
+// B + 1 = &B[1]                      == 412
+// *(B + 1) = B[1] = &B[1][0]         == 412
+// *(B + 1) + 2 = B[1] + 2 = &B[1][2] == 420
+// *(*B + 1)                          == 3
+```
+
+### 11) Pointers and Multidimensional Arrays
+
+|n| 400 | 404 | 408 | 412 | 416 | 420 |
+|-|-----|-----|-----|-----|-----|-----|
+| data | 2 | 3 | 6 | 4 | 5 | 8 |
+| - |B[0][0]|B[0][1]|B[0][2]|B[1][0]|B[1][1]|B[1][2]|
+
+```C
+int B[2][3]
+
+// print
+// B -> 400
+// *B -> 400
+// B[0] -> 400 (one dimensional array)
+// &B[0][0] -> 400
+
+// B[i][j] = *(B[i] + j) = *(*(B + i) + j)
+```
+
+```int C[3][2][2]```
+
+|n|800|816|832|
+|-|---|---|---|
+|data| 2 - 5 - 7 - 9 | 3 - 4 - 6 - 1 | 0 - 8 - 11 - 13|
+|-|C[0]|C[1]|C[2]|
+
+```C
+int C[3][2][2];
+int (*p)[2][2] = C;
+
+// print
+// C --->> 800
+// *C = C[0] = &C[0][0]
+// C[i][j][k] = *(cC[i][j] + k) = *(*(C[i] + j) + k) = *(*(*(C + i) + j) + k)
+// *(C[0][1] + 1) = C[0][1][1] -->> 9  
+// *(C[1] + 1) = C[1][1] = &C[1][1][0] -->> 824
+```
+
+```C
+// Pointers and multi-dimensional arrays
+int main()
+{
+   int C[3][2][2] = {{{2, 5}, {7, 9}},
+                    {{3, 4}, {6, 1}},
+                    {{0, 8}, {11, 13}}};
+   // print address values
+   printf("%d %d %d %d", C, *C, C[0], &C[0][0]); // 4192172 4192172 4192172 4192172
+   
+   printf("%d\n", *(C[0][0] + 1)); // 5
+
+   return 0;
+}
+```
+
+#### Passing multi-dimentional arrays as function arguments
+
+```C
+// Pointers and multi-dimensional arrays
+
+void FuncA(int *A);        // or A[]
+void FuncB(int (*B)[3]);   // or A[][3]
+void FuncC(int C[][2][2]); // or (*C)[2][2]
+
+
+int main()
+{
+   int A[2] = {1, 2};
+   FuncA(A); // A returns int*
+
+   int B[2][3] = {{2, 4, 6}, {5, 7, 8}}; // B returns a pointer to array of 3 integers - B return int (*)[3]
+   FuncB(B);
+
+   int C[3][2][2] = {{{2, 5}, {7, 9}},
+                    {{3, 4}, {6, 1}},
+                    {{0, 8}, {11, 13}}};
+   FuncC(C);
+
+   return 0;
+}
+```
+
+### 12) Pointers and Dynamic Memory - Stack vs Heap

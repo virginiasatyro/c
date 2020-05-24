@@ -90,9 +90,9 @@ N  | Memory
 ---|------
 208|b = 10
 204|a = 4
-   |
-   |
-   |
+ - | -
+ - | - 
+ - | -
 64 |p = 204
 
 Item | ARRAY | LINKED LIST | Commentaries
@@ -104,10 +104,342 @@ Easy to use | Easier | Harder
 
 ### 5) Linked List - Implementation in C/C++
 
+In a linked list, data is stored in multiple non-contiguous blocks of memory, we call each block of memory a **node**.
 
+```C
+struct Node
+{
+    int data;
+    Node* next; // struct Node* next;
+};
 
-### 6)
+Node* A;
+A = NULL;
 
-### 7)
+Node* temp = (Node*)malloc(sizeof(Node)); // in C++: Node* temp = new Node();
+(*temp).data = 2; // temp->data = 2;
+(*temp).next = NULL; // temp->next = NULL;
+A = temp;
+```
 
-### 8)
+OBS.: we will need a type casting because malloc returns ```void```.
+
+### 6) Linked List in C/C++ - Inserting a Node at Beginning
+
+```C
+// Linked List: inserting a node at the beginning
+#include<stdlib.h>
+#include<stdio.h>
+
+struct Node{
+    int data;
+    struct Node* next; // C++: Node* next
+};
+
+struct Node* head; // global variable
+
+void Insert(int x)
+{
+    Node* temp = (Node*)malloc(sizeof(struct Node));
+    temp->data = x; // (*temp).data = x;
+    temp->next = head;
+    head = temp;
+}
+
+void Print()
+{
+    struct Node* temp = temp; // temporary variable - do not modify head
+    printf("List is: ");
+    while(temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    head = NULL; // empty list
+
+    printf("How many numbers?\n");
+    int n, i;
+    scanf("%d", &n);
+    for(i = 0; i < n; i++)
+    {
+        scanf("%d", &x);
+        Insert(x);
+        Print();
+    }
+
+    return 0;
+}
+```
+
+OBS.: if we do not declare the head as global, we have to pass this information to the functions.
+
+```C
+// Linked List: inserting a node at the beginning
+
+Node* Insert(Node* head, int x)
+{
+    Node* temp = (Node*)malloc(sizeof(struct Node));
+    temp->data = x; // (*temp).data = x;
+    temp->next = head;
+    head = temp;
+
+    return head;
+}
+
+/* or:
+void Insert(Node** pointerToHead, int x)
+{
+    Node* temp = (Node*)malloc(sizeof(struct Node));
+    temp->data = x;
+    temp->next = head;
+    if(*pointerToHead != NULL) temp->next = *pointerToHead;
+    head*pointerToHead = temp;
+
+    return head;
+}
+
+in the main, we pass the head by reference:
+Insert(&head, x);
+*/
+
+void Print(Node* head)
+{
+    printf("List is: ");
+    while(head != NULL)
+    {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    Node* head = NULL; // empty list
+
+    printf("How many numbers?\n");
+    int n, i;
+    scanf("%d", &n);
+    for(i = 0; i < n; i++)
+    {
+        scanf("%d", &x);
+        head = Insert(x);
+        Print(head);
+    }
+
+    return 0;
+}
+```
+
+OBS.: if we do not declare the head as global, we have to pass this information to the functions.
+
+### 7) Linked List in C/C++ - Insert a Node at Nth Position
+
+```C
+#include<stdlib.h>
+#include<stdio.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* head; // global
+
+void Insert(int data, int n)
+{
+    // C++: Node* temp1 = new Node();
+    struct Node* temp1 = (struct Node*)malloc(sizeof(struct Node*)); // creating a new node
+    temp1->data = data;
+    temp1->next = NULL;
+    if(n == 1)
+    {
+        temp1->next = head;
+        head = temp1;r
+        return;
+    }
+
+    Node* temp2 = head;
+    for(int i = 0; i < n - 2; i++)
+    {
+        temp2 = temp2->next;
+    }
+    temp1->next = temp2->next;
+    temp2->next = temp1;
+}
+
+void Print()
+{
+    Node* temp = head;
+    while(temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    head = NULL; // empty list
+
+    Insert(2, 1);
+    Insert(3, 2);
+    Insert(4, 1);
+    Insert(5, 2);
+
+    Print();
+
+    return 0;
+}
+```
+
+|Application Memory|
+|------------------|
+|Heap|
+|Stack|
+|Static/Global|
+|Code (Text)|
+
+The first three sections (code, Static, Stack) are fixed in size - decided at compile time.
+
+- Code(text) - store all the instructions that need to be executed.
+- Static/Global - this section is allocated to store the global variables that live for the entire lifetime of the program/application.
+- Stack - store all the information about function call executions, to store all the local variables.
+- Heap - free store - is not fixed an we can request memory from the heap during run-time and that's what we do whan we use malloc or ```new``` operator.
+
+### 8) Linked List in C/C++ - Delete a Node at Nth Position
+
+1) Fix the links.
+2) Free the space.
+
+```C
+// Linked List: delete a node at nth position
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* head;
+
+void Delete(int n)
+{
+    struct Node* temp1 = head;// temporary variable that is pointed to node
+
+    if(n == 1){ // deleting head
+        head = temp1->next; // head now points to second node
+        free(temp1);
+        return;
+    }
+
+    int i;
+    for(i = 0; i < n-2; i++)
+        temp1 = temp1->next;
+    // temp1 points to (n-1)th Node
+    struct Node* temp2 = temp1->next; // nth Node
+    temp1->next = temp2->next; // (n+1)th Node
+    free(temp2); // delete temp2;
+}
+
+void Insert(int data);
+void Print();
+
+int main()
+{
+    head = NULL; // list empty
+    Insert(2);
+    Insert(4);
+    Insert(6);
+    Insert(8);
+
+    int n;
+    printf("Enter a position:\n");
+    scanf("%d", &n);
+
+    Delete(n);
+    Print();
+
+    return 0;
+}
+```
+
+### 9) Reverse a Linked List - Iterative Method
+
+![linked list](img/reverse-linked-list.png)
+
+```C
+struct Node
+{
+    int data;
+    struct Node* next;
+};
+
+struct Node* head;
+
+void Reverse()
+{
+    struct Node* head; // variable pointer to node
+    struct Node* prev; 
+    struct Node* current;
+    struct Node* next;
+
+    current = head; // set it to head
+    prev = NULL; // the first become the last - points to NULL
+
+    while(current != NULL) // while temp is not equal to NULL
+    {
+        next = current->next; // store the address of the next in the point of view of the current
+        current->next = prev; // current now points to previous
+
+        prev = current;
+        current = next;
+    }
+    head = prev;
+}
+```
+
+![linked list](img/reverse-linked-2.png)
+
+```C
+struct Node* Reverse(struct Node* head) // head variable is not global
+{
+    struct Node *current, *prev, *next;
+    current = head;
+    prev = NULL;
+
+    while(current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+    return head;
+}
+
+int main()
+{
+    struct Node* head = NULL; // head is local
+    head = Insert(head, 2); // Insert: struct Node* Insert(struct Node* head, int data)
+    head = Insert(head, 4);
+    head = Insert(head, 6);
+    head = Insert(head, 8);
+
+    Print(head);
+    head = Reverse(head);
+    Print(head);
+
+    return 0;
+}
+```
+
+### 10) Print Elements of a Linked List in Forward and Reverse Order Using Recursion
