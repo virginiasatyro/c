@@ -387,7 +387,7 @@ struct Node* head;
 void Reverse()
 {
     struct Node* head; // variable pointer to node
-    struct Node* prev; 
+    struct Node* prev;
     struct Node* current;
     struct Node* next;
 
@@ -443,3 +443,217 @@ int main()
 ```
 
 ### 10) Print Elements of a Linked List in Forward and Reverse Order Using Recursion
+
+```C
+struct Node
+{
+    int data;
+    struct Node* next;
+};
+
+struct Node* Insert(Node* head, int data)
+{
+    Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = NULL;
+
+    if(head == NULL) head = temp;
+    else
+    {
+        Node* temp1 = head;
+        while(temp1->next != NULL) temp1 = temp1->next;
+        temp1->next = temp;
+    }
+    return head;
+}
+
+void Print(struct Node* p)
+{
+    if(p == NULL) return; // exit condition
+
+    printf("%d ", p->data);
+    Print(p->next);
+}
+
+void ReversePrint(struct Node* p)
+{
+    if(p == NULL) return;
+
+    ReversePrint(p->next);
+    printf("%d ", p->data);
+}
+
+int main()
+{
+    struc Node* head = NULL;
+    head = Insert(head, 2);
+    head = Insert(head, 4);
+    head = Insert(head, 6);
+    head = Insert(head, 5);
+
+    Print(head);
+
+    return 0;
+}
+```
+
+### 11) Reverse a Linked List Using Recursion
+
+![linked list](img/reverse-linked-list-1.png)
+
+```C
+struct Node{
+    int data;
+    struct Node* next;
+}
+
+struct Node* head; // head is a global variable - facilitate the code
+
+void Reverse(struct Node* p)
+{
+    if(p->next == NULL)
+    {
+        head = p;
+        return;
+    }
+    Reverse(p->next);
+    struct Node* q = p->next;
+    q->next = p;
+    p->next = NULL;
+}
+
+
+void Reverse(struct Node* p)
+{
+    if(p->next == NULL)
+    {
+        head = p;
+        return;
+    }
+    Reverse(p->next);
+    p->next->next = p;
+}
+```
+
+### 12) Data structures: Introduction to Doubly Linked List
+
+In a doubly linked list, each Node would have two links - one to the next Node and another to the previous Node.
+
+```C
+struct Node{
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+```
+
+![linked list](img/doubly-linked-list.png)
+
+First advantage of implementing a doubly linked list is that now we have pointer to any Node, then we can do a forward as well as reverse look-up. With just one pointer, we can look at the current Node, the next Node as well as the previous Node. If temp is a pointer pointing to a Node, then ```temp->next``` is a pointer pointing to the next Node.
+So, even implementation of some of the operations like deletion becomes a lot easier. In a singly linked list, to delete a Node you would need two pointer - one to the Node to be deleted and one to the previous Node. But in a doubly linked list, we can do so using only one pointer to the Node to be deleted.
+
+All in all this ability that we can do a reverse look-up in the linked list is really useful. We can flow through the linked list in both directions. The disadivantage is that we are having to use extra memory for a pointer to previous Node. With a doubly linked list, we also need to be more careul while resetting links, inserting or deleting.
+
+### 13) Doubly Linked List - Implementation in C/C++
+
+```C++
+struct Node{
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+struct Node* head; // global variable
+
+struct Node* GetNewNode(int x)
+{
+    /* reserves memory in heap
+    access to this memory always happens through a pointer variable
+    newNodePtr is a pointer */
+    struct Node* newNodePtr = (struct Node*)malloc(sizeof(struct Node));
+
+    newNodePtr->data = x; // (*newNodePtr).data = x;
+    newNodePtr->prev = NULL;
+    newNodePtr->next = NULL;
+
+    return newNode;
+}
+
+void InsertAtHead(int x)
+{
+    struct Node* newNode = GetNewNode(x);
+    if(head = NULL)
+    {
+        head = newNode;
+        return;
+    }
+    head->prev = newNode;
+    newNode->next = head;
+    head = newNode;
+}
+
+void Print()
+{
+    struct Node* temp = head; // temporary pointer to node initially set to head
+    while(temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+void ReversePrint()
+{
+    struct Node* temp = head;
+    it(temp == NULL) return; // empty list, exit
+
+    // going to last node
+    while(temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+
+    // traversing backwards using prev pointer
+    while(temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->prev;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    head = NULL; // empty list
+
+    InsertAtHead(2); Print(); ReversePrint();
+    InsertAtHead(4); Print(); ReversePrint();
+    InsertAtHead(6); Print(); ReversePrint();
+
+    return 0;
+}
+```
+
+### 14) Data structures: Introduction to stack
+
+Data structures, as we know, are ways to store and organize data in computers. When we talk about Stack ADT, we talk about the features or operations available with the data structure - no implementation details.
+
+Stack is a list with the restriction that insertion and deletion can be performed only from one end, called the top.
+
+- last-in first-out (LIFO)
+
+Operations:
+
+- Push(x): push (insert) ```x``` onto the stack
+- Pop(x): pop (remove) the most recent item from the stack
+- Top(): return elements of the top of the stack
+- IsEmpty(): return true if the stack is empty
+
+All these operations can be performed in constant time, time complexity is O(1).
+
+Applications:
+
+- Functions calls/recursion
+- undo operation in an editor
+- balanced parentheses: we can check this, for example using the stack in an program
