@@ -17,7 +17,7 @@ N  | Memory
    |
 64 |p = 204
 
-```C
+```C++
 int a;
 int *p; // points to an integer - store this adress
 
@@ -34,7 +34,7 @@ printf("%d", a); // 8
 
 ### 2) Working with pointers
 
-```C
+```C++
 int a;  // integer
 int *p; // pointer to integer
 
@@ -47,7 +47,7 @@ double *p1; // pointer to double
 p = &a; // p points to a
 ```
 
-```C
+```C++
 int a = 10;
 int *p;
 p = &a; // &a = adress of a
@@ -60,14 +60,14 @@ printf("%d", &a);   // 3800000
 printf("%d", a); // 12
 ```
 
-```C
+```C++
 // these declarations are the same:
 
 int *p;
 int* p;
 ```
 
-```C
+```C++
 int a = 10;
 int *p;
 p = &a;
@@ -95,7 +95,7 @@ char -> 1 byte
 
 float -> 4 bytes
 
-```C
+```C++
 int a = 1025;
 int *p;
 p = &a;
@@ -111,7 +111,7 @@ printf("Address = %d, value = %d\n, p0, *p0); // 4123338 | 1
 // 1025 = 00000000 00000000 00000100 00000001
 ```
 
-```C
+```C++
 int a = 1025;
 int *p;
 
@@ -124,7 +124,7 @@ printf("Adress = %d\n.", p0); // 3344104
 
 ### 4) Pointers to Pointers in C/C++
 
-```C
+```C++
 int x = 5;
 int *p = &x;
 *p = 6;
@@ -156,9 +156,9 @@ When a program on an application is started computer sets aside (reserves) some 
 |Static/Global|
 |Code (Text)|
 
-Exemple of calling by **value**:
+Example of calling by **value**:
 
-```C
+```C++
 void increment(int a)
 {
    a = a + 1;
@@ -175,9 +175,9 @@ int main()
 }
 ```
 
-Exemple of calling by **reference**:
+Example of calling by **reference**:
 
-```C
+```C++
 void increment(int *p)
 {
    *p = *p + 1;
@@ -200,7 +200,7 @@ It is important to know that we are saved from creating a new copy of a complex 
 
 #### Array
 
-```C
+```C++
 int A[5];
 ```
 
@@ -221,7 +221,7 @@ Element at index ```i```:
 - Adress: ```&A[i]``` or ```(A + i)```
 - Value: ```A[i]``` or ```*(A + i)```
 
-```C
+```C++
 // Pointers and Arrays
 
 int main()
@@ -237,7 +237,7 @@ int main()
 }
 ```
 
-```C
+```C++
 int main()
 {
    int A[] = {2, 4, 5, 8, 1};
@@ -256,7 +256,7 @@ int main()
 
 ### 7) Arrays as Function Arguments
 
-```C
+```C++
 // arrays as function arguments
 int sumOfElements(int A[], int size)
 {
@@ -287,7 +287,7 @@ The compiler implicitly converts this ```int A[]``` to ```int *A```. So ```int A
 
 Arrays are always called by reference:
 
-```C
+```C++
 void Double(int *A, int size) // int* A or int A[]
 {
    int i, sum = 0;
@@ -322,7 +322,7 @@ Character arrays - **strings** - are a group or set of characters, for example: 
 
 How to store strings: the character array must be large enougth to accommodate the string. ```size of array >= number of characters in string + 1```
 
-```C
+```C++
 char c[8];
 c[0] = 'J'; c[1] = 'o'; c[2] = 'h'; c[3] = 'n';
 printf("%s\n", C); // John!#@*&|
@@ -340,7 +340,7 @@ How to know when the string end? We need to put a special character ```\0``` (nu
 |--------|---|---|---|---|---|---|---|---|
 |c| J | o | h | n | \0 | trash | trash | trash |
 
-```C
+```C++
 #include<string.h>
 
 int main()
@@ -362,7 +362,7 @@ int main()
 
 Arrays and pointers are different types that are used in similar manner.
 
-```C
+```C++
 char c1[6] = "Hello";
 char *c2;
 c2 = c1; // poiter c2 now points to the first byte of c1
@@ -376,7 +376,7 @@ Array are always passed to function by reference. When we pass array to function
 
 Because arrays are large in size it is inefficient to create a copy of the same array for each function.
 
-```C
+```C++
 void print(char *C)
 {
    int i = 0;
@@ -397,7 +397,7 @@ int main()
 
 ### 9) Character Arrays and Pointer - Part 2
 
-```C
+```C++
 void print(char *C)
 {
    while(*C != '\0')
@@ -429,7 +429,7 @@ int main()
 | data |  2  |  4  |  6  |  8  | 10 |
 |-|A[0]|A[1]|A[2]|A[3]|A[4]|
 
-```C
+```C++
 int *p = A
 printf("%d\n", p); // 200
 printf("%d\n", *p); // 2
@@ -445,7 +445,7 @@ printf("%d\n", *(p + 2)); // 6
 |data| 1 - 3 - 6 | 2 - 4 - 8 |
 |-|B[0]|B[1]|
 
-```C
+```C++
 int (*p)[3] = B;
 
 // B = &B[0]                          == 400
@@ -463,7 +463,7 @@ int (*p)[3] = B;
 | data | 2 | 3 | 6 | 4 | 5 | 8 |
 | - |B[0][0]|B[0][1]|B[0][2]|B[1][0]|B[1][1]|B[1][2]|
 
-```C
+```C++
 int B[2][3]
 
 // print
@@ -482,7 +482,7 @@ int B[2][3]
 |data| 2 - 5 - 7 - 9 | 3 - 4 - 6 - 1 | 0 - 8 - 11 - 13|
 |-|C[0]|C[1]|C[2]|
 
-```C
+```C++
 int C[3][2][2];
 int (*p)[2][2] = C;
 
@@ -494,7 +494,7 @@ int (*p)[2][2] = C;
 // *(C[1] + 1) = C[1][1] = &C[1][1][0] -->> 824
 ```
 
-```C
+```C++++++
 // Pointers and multi-dimensional arrays
 int main()
 {
@@ -503,7 +503,7 @@ int main()
                     {{0, 8}, {11, 13}}};
    // print address values
    printf("%d %d %d %d", C, *C, C[0], &C[0][0]); // 4192172 4192172 4192172 4192172
-   
+
    printf("%d\n", *(C[0][0] + 1)); // 5
 
    return 0;
@@ -512,7 +512,7 @@ int main()
 
 #### Passing multi-dimentional arrays as function arguments
 
-```C
+```C++
 // Pointers and multi-dimensional arrays
 
 void FuncA(int *A);        // or A[]
@@ -538,3 +538,167 @@ int main()
 ```
 
 ### 12) Pointers and Dynamic Memory - Stack vs Heap
+
+Application's memory:
+
+|Memory|
+|------|
+|Heap|
+|Stack|
+|Static/Global|
+|Code (text)|
+
+#### Code
+
+Part of memory assigned to store the instructions that need to be executed.
+
+#### Static/Global
+
+Store all the static and global variables that are not declared inside a function, and that have the whole lifetime of an application, they are accessible anywhere during the application's life cycle.
+
+#### Stack
+
+Store all information of functions calls and all the local variables.
+
+The amount of memory set aside for these three segments, the text, static/global and stack, does not grow while the application is running.
+
+The allocation and deallocation of memory onto the stack happens by a set rule. When a function is called, it is pushed onto the stack, when it finishes, it is popped out of the stack or removed from the stack. It is not possible to manipulate the scope of the variable if it is on the stack. Another limitation is that if we need to declare a large data type, like an array as local variable, then we need to know the size of the array at compile time.
+
+##### Stack Overflow
+
+The operating system allocates some amount of reserved space for the stack, but the actual allocation of the stack frame and the local variable happens from the stack during runtime and if our call stack grows beyond reserved memory for the stack, then this is called stack overflow and the program will crash. Example: program with a bad recursive function.
+
+#### Heap
+
+Unlike stack, application's heap is not fixed. It's size can vary. The programer can totally control how much memory to use from the heap, till what time to keep the data in the memory during the application's lifetime and heap can grow as long as you do not run out of memory on the system itself.
+
+We can also call heap: free store/pool of memory or **dynamic memory**.
+
+To use dynamic memory in C, we need to know about four functions: **malloc**, **calloc**, **realloc** and **free**. In C++: **new**, **delete**.
+
+Example:
+
+```C++
+// C
+
+int main()
+{
+   // goes on stack
+   int a;
+   int *p;
+
+   // goes on heap
+   p = (int*)malloc(sizeof(int));
+   // write 10 on the block of memory in the heap
+   *p = 10;
+   // deallocate memory
+   free(p);
+
+   // large amount of contiguous memory allocated in the heap
+   p = (int*)malloc(20*sizeof(int));
+   free(p);
+
+   return 0;
+}
+```
+
+```C++
+// C++
+
+int main()
+{
+   // goes on stack
+   int a;
+   int *p;
+   // goes on heap
+   p = new int;
+   *p = 10;
+   delete p;
+
+   p = new int[20];
+   delete[] p;
+
+   return 0;
+}
+```
+
+### 13) Dynamic memory allocation in C - malloc calloc realloc free
+
+Allocate blocks of memory: ```malloc```, ```calloc``` and ```realloc```.
+
+Deallocate block of memory: ```free```.
+
+#### ```malloc```
+
+```void* malloc(size_t size);```
+
+Malloc returns a void pointer that gives us the address of the first byte in this block allocated.
+
+```C++
+int *p = (int*)malloc(3*sizeof(int));
+
+printf("%d ", p); // address of memory
+
+*p = 2;       // first item of the array
+*(p + 1) = 4; // second item
+*(p + 2) = 6; // third item
+p[3] = 8; // same thing
+```
+
+All the manipulation on dynamically allocated memory happens through pointers.
+
+#### ```calloc```
+
+It does the same thing as ```calloc```.
+
+```void* calloc(size_t num, size_t size);```
+
+```C++
+int *p = (int*)calloc(3, sizeof(int));
+```
+
+When malloc allocates some amount of memory, it does not initialize the bytes with any value, so if you do not fill in any value into these addresses allocatedby ```malloc```, you would have some garbage there. But if you allocate memory through ```calloc```, it sets all byte positions to **zero**.
+
+#### ```realloc```
+
+If we have a block of memory, dynamically allocated and we want to change the size of it, then we can use ```realloc```.
+
+```void*realloc(void* Ptr, size_t size);```
+
+#### Example
+
+```C++
+int main()
+{
+   int n;
+   printf("Enter size of the array:\n");
+   scanf("%d", &n);
+
+   // dynamically allocated array
+   int *A = (int*)malloc(n * sizeof(int));
+   // int *A = (int*)calloc(n, sizeof(int));
+
+   for(int i = 0; i < n; i++)
+   {
+      A[i] = i + 1;
+   }
+
+   for(int i = 0; i < n; i++)
+   {
+      printf("%d ", A[i]);
+   }
+
+   // create a new block and copies the values of the previous memory block A
+   int *B = (int*)realloc(A, 2*n*sizeof(int));
+
+   // equivalent to malloc 
+   int *B = (int*)realloc(NULL, n * sizeof(int));
+
+   free(A); // same as int *A = (int*)realloc(A, 0);
+   free(B);
+
+   return 0;
+}
+```
+
+### 14) Pointers as function returns in C/C++

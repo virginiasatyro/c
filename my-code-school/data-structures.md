@@ -28,7 +28,7 @@ Exemples:
 
 List - collection of objects of the same type.
 
-Exemple - List:
+Example - List:
 
 - store a given number of elements of given data-type;
 - write/modify elements at a position;
