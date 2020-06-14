@@ -657,3 +657,213 @@ Applications:
 - Functions calls/recursion
 - undo operation in an editor
 - balanced parentheses: we can check this, for example using the stack in an program
+
+### 15) Data structures: Array implementation of stacks
+
+We can implement stacks using:
+
+- arrays
+- linked lists
+
+#### Array implementation
+
+```int A[10]```
+
+And with this array we can implement push, pop and top operations. In case of overflow, we can create a lerger array and copy all elements in new array.
+
+- Push - O(1) in best case, O(n) in worst case and O(1) in average case. O(n) for n pushes.
+
+```C++
+#define MAX_SIZE 101
+int A[MAX_SIZE];
+int top = -1;
+
+void Push(int x)
+{
+    if(top == MAX_SIZE - 1) // overflow
+    {
+        printf("Error: stack overflow\n");
+        return;
+    }
+    A[++top] = x;
+}
+
+void Pop()
+{
+    if(top == -1) // empty stack
+    {
+        printf("Error: no element to pop\n");
+        return;
+    }
+    top--;
+}
+
+int Top()
+{
+    return A[top];
+}
+
+void Print()
+{
+    int i;
+    printf("Stack: ");
+    for(i = 0; i <= top; i++)
+        printf("%d ", A[i]);
+    printf("\n");
+}
+
+int main()
+{
+    Push(2); Print();
+    Push(5); Print();
+    Push(10); Print();
+
+    Pop(); Print();
+
+    Push(12); Print();
+
+    return 0;
+}
+```
+
+This is not an ideal implementation, an ideal should be like having a datatype called stack and we should be able to create instances of it. We can easily do it in an object-oriented implementation, or in 'C' using structures.
+
+### 16) Data Structures: Linked List implementation of stacks
+
+Operations - should be constant time or O(1):
+
+1. Push(x)
+2. Pop()
+3. Top()
+4. IsEmpty()
+
+Insert/delete:
+
+- at end - O(n)
+- at beginning - O(1)
+
+#### Linked List implementation
+
+```C++
+struct Node{
+    int data;
+    struct Node* link;
+};
+
+struct Node* top = NULL; // list is empty
+
+void Push(int x) // x is inserted
+{
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node*)); // creating a node on the dynamic memory
+    temp->data = x; // data = x
+    temp->link = top; // new node points to the previous top
+    top = temp; // top points to the last node
+}
+```
+
+Example of ```Push(2); Push(5)```:
+
+![stack linked list](img/stack-linked-list.png)
+
+```C++
+void Pop()
+{
+    struct Node *temp; // pointer to node temp
+    if(top == NULL) return; // check if the stack is empty
+    temp = top; // temp poits to the top node
+    top = top->link;
+    free(temp);
+}
+```
+
+![stack pop](img/stack-pop-1.png)
+
+![stack pop](img/stack-pop-2.png)
+
+### 17) Reverse a string or linked list using stack
+
+#### Reverse a string
+
+![reverse a string](img/reverse-string.png)
+
+![reverse a string](img/reverse-string-stack.png)
+
+```C++
+using namespace std;
+
+class Stack
+{
+private:
+    char A[101];
+    int top;
+public:
+    void Push(int x);
+    void Pop();
+    int Top();
+    bool IsEmpty();
+};
+```
+
+```C++
+#include <stack> // stack from standard template library (STL)
+
+void Reverse(char C[], int n) // C[] or *C
+{
+    stack<char> S; // creating a stack of characters
+    for(int i = 0; i < n; i++)
+    {
+        S.push(C[i]);
+    }
+    // loop for pop
+    for(int i = 0; i < n; i++)
+    {
+        C[i] = S.top(); // overwrite the character at index i
+        S.pop(); // perform pop
+    }
+}
+
+int main()
+{
+    char C[51];
+    printf("Enter a string: ");
+    gets(C);
+    Reverse(C, strlen(C));
+    printf("Output = %s\n", C);
+
+    return 0;
+}
+```
+
+Time complexity of ```Reverse``` is O(n). Space complexity is O(n) - consume a lot of memory.
+
+#### Reverse a linked list
+
+![reverse linked list with stack](img/reverse-linked-stack.png)
+
+```C++
+void Reverse()
+{
+    if(head == NULL) return;
+    stack<struct Node*> S;
+    Node* temp = head;
+
+    while(temp != NULL)
+    {
+        S.push(temp);
+        temp = temp->next;
+    }
+    temp = S.top();
+    head = temp;
+    S.pop();
+
+    while(!S.empty())
+    {
+      temp->next = S.top();
+      S.pop();
+      temp = temp->next;
+    }
+    temp->next = NULL;
+}
+```
+
+### 18)

@@ -691,7 +691,7 @@ int main()
    // create a new block and copies the values of the previous memory block A
    int *B = (int*)realloc(A, 2*n*sizeof(int));
 
-   // equivalent to malloc 
+   // equivalent to malloc
    int *B = (int*)realloc(NULL, n * sizeof(int));
 
    free(A); // same as int *A = (int*)realloc(A, 0);
@@ -702,3 +702,138 @@ int main()
 ```
 
 ### 14) Pointers as function returns in C/C++
+
+A pointer is another data type that stores the address of another data type.
+
+```C++
+// call by value
+int Add(int a, int b)
+{
+   int c = a + b;
+   return c;
+}
+
+int main()
+{
+   int a = 2, b = 4;
+   // call by value
+   int c = Add(a, b); // value in a/b are copied to a/b of Add
+
+   return 0;
+}
+```
+
+```C++
+// call by reference
+int Add(int* a, int* b)
+{
+   // a/b are pointers to integers local to Add
+   printf("Address of a in Add = %d\n", &a); // 3537372
+   printf("Value in a of Add (address of main) = %d\n", a); // 3537612
+   printf("Value at address stored in a of Add = %d\n", *a); // 2
+   int c = (*a) + (*b);
+   return c;
+}
+
+int main()
+{
+   int a = 2, b = 4;
+   printf("Address of a in main = %d\n", &a); // 3537612
+   // call by reference
+   int c = Add(&a, &b); // a/b are local integers
+
+   return 0;
+}
+```
+
+Now we want to return a pointer to integer from this function.
+
+This code bellow has a problem, try to discover this problem analysing what happens in the stack memory.
+
+```C++
+int* Add(int* a, int* b) // returning a pointer to integer
+{
+   int c = (*a) + (*b);
+   return &c; // address
+}
+
+int main()
+{
+   int a = 2, b = 4;
+   int* ptr = Add(&a, &b); // ptr points to ? (value can be overwritten)
+   printf("Sum = %d\n", *ptr);
+}
+```
+
+So what are the use cases in which we may want to return pointers from functions? Usually if we have address of some memory block in the heap section or in the global section, then we can safely return the address of these blocks, because anything has to be explicitly de-allocated. And anything which is in the glocal section lives for the entire lifetime.
+
+```C++
+int *Add(int* a, int* b)
+{
+   int* c = (int*)malloc(sizeof(int)); // allocate memory space in the heap
+   *c = (*a) + (*b);
+   return c;
+}
+
+int main()
+{
+   int a = 2, b = 4;
+   int* ptr = Add(&a, &b);
+   printf("Sum = %d\n", *ptr);
+
+   return 0;
+}
+```
+
+### 15) Function Pointers in C / C++
+
+Function pointers are used to store address of functions.
+
+```C++
+int Add(int a, int b)
+{
+   return a + b;
+}
+
+int main()
+{
+   // pointer to function that should take
+   // (int, int) as argument/parameter and return int
+   int (*p)(int, int);
+   p = &Add; // p now points to add
+   // now with p we can execut Add
+
+   int c;
+   c = (*p)(2, 3); // de-referencing and executing the function
+   printf("%d", c);
+
+   return 0;
+}
+```
+
+```C++
+void PrintHello()
+{
+   printf("Hello\n");
+}
+
+void PrintHello2(char* name)
+{
+   printf("Hello %s\n", name);
+}
+
+int main()
+{
+   void (*ptr)();
+   ptr = PrintHello;
+   ptr(); // executes function
+
+   void (*ptr2)(char*);
+   ptr = PrintHello2;
+   ptr("Virginia");
+
+   return 0;
+}
+```
+
+### 16) Function pointers and callbacks
