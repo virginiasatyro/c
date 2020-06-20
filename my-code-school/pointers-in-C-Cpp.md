@@ -837,3 +837,96 @@ int main()
 ```
 
 ### 16) Function pointers and callbacks
+
+Function pointers: can be passed as arguments to functions.
+
+```C++
+void A()
+{
+   printf("Hello");
+}
+
+void B(void (*ptr)()) // function pointer as argument
+{
+   ptr(); // call-back function that "ptr" points to
+}
+
+int main()
+{
+   // p is a function pointer - takes no arguments and returns void
+   void (*p)() = A; // initialize p as address of A
+   B(p);
+
+   // or we can simply:
+   B(A);
+
+   return 0;
+}
+```
+
+```C++
+int compare(int a, int b)
+{
+   if(a > b) return 1; // 1 2 3 4 5 6
+   else  return -1;
+}
+
+int absolute_compare(int a, int b) // compare negative values
+{
+   if(abs(a) > abs(b)) return 1;
+   return -1;
+}
+
+void BubbleSort(int *A, int n, int (*compare)(int, int))
+{
+   int i, j, temp;
+   for(i = 0; i < n; i++)
+   {
+      for(j = 0; j < n - 1; j++)
+      {
+         if(compare(A[j] > A[j + 1]) > 0) // swap
+         {
+            temp = A[j];
+            A[j] = A[j + 1];
+            A[j + 1] = temp;
+         }
+      }
+   }
+}
+
+int main()
+{
+   int i, A[] = {3, 2, 1, 5, 6, 4};
+   BubbleSort(A, 6, compare);
+   for(i = 0; i < 6; i++)
+      printf("%d ", A[i]);
+}
+```
+
+```C++
+/*
+void pointers are generic pointers
+we can typecast them to a pointer of any data type  */
+int compare(const void* a, const void* b)
+{
+   // typecast the void* to int*
+   // the first * is to get the value
+   int A = *((int*)a);
+   int B = *((int*)b);
+
+   return abs(A) - abs(B);
+}
+
+int main()
+{
+   int i, A[] = {-31, 22, -1, 50, -6, 4}; // => {-1, 4, -6, 22, -31, 50}
+   qsort(A, 6, sizeof(int), compare);
+   for(i = 0; i < 6; i++) printf("%d ", A[i]);
+}
+```
+
+### 17) Memory leak in C/C++
+
+Memory leak - our application is holding on to some unused memory on the heap; improper use of dynamic memory.
+
+(example of a game using malloc to allocate memory on the heap, and wihout free function, the memory consumption of the program continues to grow - we can see this opening the windows task manager, for example)
