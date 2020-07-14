@@ -866,4 +866,76 @@ void Reverse()
 }
 ```
 
-### 18)
+### 18) Check for balanced parentheses using stack
+
+Expression: ```)(, [()], [(]]), [{(})]```. Is it balanced?
+Solution to this problem:
+
+- scan from left to right;
+- if opening symbol, add it to a list;
+- if closing symbol, remove last opening symbol in list;
+- should end with an **empty list**;
+  
+Last unclosed, first closed!
+
+```C
+CheckBalancedParenthesis(exp)
+{
+    n <- length(exp)
+    create a stack :- s
+    for i <- 0 to n-1
+    {
+        if exp[i] is '(' or '{' or '['
+            push(exp[i])
+        else if exp[i] is ')' or '}' or ']'
+        {
+            if(s is empty) (top does not pair with exp[i])
+            {
+                return false
+            }else
+            {
+                pop()
+            }
+        }
+    }
+    return s is empty ? true : false
+}
+```
+
+### 19) Infix, Prefix and Postfix
+
+#### Infix
+
+Evaluation of expressions:
+
+```2 + 3, A- B, (p * 2)```
+```<operand><operator><operand>``` **INFIX NOTATION**
+
+- operand: object on which operation is performed;
+
+Order of operation:
+
+1) Parentheses;
+2) Exponents;
+3) Multiplication and division;
+4) Addition and Subtraction;
+
+#### Prefix
+
+Polish notation.
+
+```<operator><operand><operand>```
+
+Examples: ```+ 2 3, - p q```
+
+#### Postfix
+
+Reverse polish notation.
+
+```<operand><operand><operator>```
+
+Example: ```(2, 3 +); p q -; abc*+```
+
+### 20) Evaluation of Prefix and Postfix expressions using stack
+
+(explanation about use of the stack when evaluation a prefix/postfix expression)
