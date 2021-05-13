@@ -208,7 +208,7 @@ Maximum number of nodes at level ```i```: ```i = 2^i```.
 
 We can implement binary tree using:
 
-#### a) dynamically created nodes;
+#### a) dynamically created nodes
 
 ```C++
 struct Node{
@@ -244,7 +244,7 @@ Binary search tree is an efficient structure to organize data for quick search a
 **Binary Search Tree (BST)** -  a binary tree in which for each node, value of all the nodes in left subtree is lesser (or equal) and value of all the nodes in right subtree is greater.
 
 ![bst](img/bst.png)
- 
+
 ### 28) Binary search tree - Implementation in C/C++
 
 ![bst](img/bst-1.png)
@@ -315,3 +315,306 @@ Nodes will be created in heap using ```malloc``` function in C or ```new``` oper
 ### 29) BST implementation - memory allocation in stack and heap
 
 ![bst memory allocation](img/bst-mem.png)
+
+### 30) Find min and max element in a binary search tree
+
+```C++
+struct BstNode {
+    int data;
+    BstNode* left;
+    BstNode* right;
+};
+
+// iterative solution
+int FindMin(BstNode* root)
+{
+    if(root == NULL)
+    {
+        cout << "Error: Tree is empty!\n";
+        return -1;
+    }
+    while(root->left != NULL)
+    {
+        root = root->data;
+    }
+}
+
+// recursive solution
+int FindMin(BstNode* root)
+{
+    if(root == NULL)
+    {
+        cout << "Error: Tree is empty!\n";
+        return -1;
+    }
+    else if(root->left == NULL)
+    {
+        return root->data;
+    }
+    // search in left subtree
+    return FindMin(root->left);
+}
+```
+
+![bst find the minimum value](img/bst-find-min.png)
+
+### 31) Find height of a binary tree
+
+**Height of tree** is the number of edges in longest path from root to node or can be the height or root. Height of tree with 1 node is zero.
+
+![example of depth and height](img/bst-depth-height.png)
+
+```C++
+struct BstNode {
+    int data;
+    BstNode* left;
+    BstNode* right;
+};
+
+int FindHeight(struct Node *root)
+{
+    if(root == NULL)
+        return -1;
+    return max(FindHeight(root->left), FindHeight(root->right)) + 1;
+}
+```
+
+### 32) Binary tree traversal - breadth-first and depth-first strategies
+
+**Tree traversal** - process of visiting each node in the tree exactly once in some order. Two categories: breadth-first and depth-first.
+
+![bst traversal](img/bst-traversal.png)
+
+Breadt-first: F, D, J, B, E, G, K, A, C, I, H. Level-order.
+Depth-first:
+
+- ```<root><left><right>``` - preorder: F, D, B, A, C, E, J, G, I, H, K;
+- ```<left><root><right>``` - inorder: A, B, C, D, E, F, G, H, I, J, K;
+- ```<left><right><root>``` - postorder: A, C, B, E, D, H, I, G, K, J, F;
+
+### 33) Binary tree: Level Order Traversal
+
+In level order traversal, we visit all nodes at a particular depth or level before visiting the nodes at next deeper level.
+
+![bst traversal level order](img/bst-level-order.png)
+
+![bst traversal level order](img/bst-queue.png)
+
+Queue (FIFO): F, D, J, B, E, G, K, A, C, I, H;
+
+```C++
+#include<iostream>
+#include<queue>
+
+using namespace std;
+
+struct Node{
+    char data;
+    Node *left;
+    Node *right;
+};
+
+// Function to print Nodes in a binary tree in Level order
+void LevelOrder(Node *root) {
+    if(root == NULL) return;
+    queue<Node*> Q;
+    Q.push(root);  
+    //while there is at least one discovered node
+    while(!Q.empty()) {
+        Node* current = Q.front();
+        Q.pop(); // removing the element at front
+        cout<<current->data<<" ";
+        if(current->left != NULL) Q.push(current->left);
+        if(current->right != NULL) Q.push(current->right);
+    }
+}
+// Function to Insert Node in a Binary Search Tree
+Node* Insert(Node *root,char data) {
+    if(root == NULL) {
+        root = new Node();
+        root->data = data;
+        root->left = root->right = NULL;
+    }
+    else if(data <= root->data) root->left = Insert(root->left,data);
+    else root->right = Insert(root->right,data);
+    return root;
+}
+
+int main() {
+    /*Code To Test the logic
+    Creating an example tree
+                M
+               / \
+              B   Q
+             / \   \
+            A   C   Z
+    */
+    Node* root = NULL;
+    root = Insert(root,'M'); root = Insert(root,'B');
+    root = Insert(root,'Q'); root = Insert(root,'Z');
+    root = Insert(root,'A'); root = Insert(root,'C');
+    //Print Nodes in Level Order.
+    LevelOrder(root);
+}
+```
+
+Time complexity: O(n). Space complexity: O(1) for best, O(n) for worst/average.
+
+### 34) Binary tree traversal: Preorder, Inorder, Postorder
+
+```C++
+struct Node {
+    char data;
+    Node *left;
+    Node *right;
+};
+
+/*
+             F
+           /   \
+          D     J
+         / \   / \
+        B   E G   K
+       / \     \
+      A   C     I
+*/
+
+void Preorder(Node *root) // F D B A C E J G I K
+{
+    if(root == NULL) return;
+
+    printf("%c ", root->data);
+    Preorder(root->left); // recursive call for left subtree
+    Preorder(root->right);
+}
+
+void Inorder(Node *root) // A B C D E F G H I J K
+{
+    if(root == NULL) return;
+
+    Inorder(root->left);
+    printf("%c ", root->data);
+    Inorder(root->right);
+}
+
+void Postorder(Node *root) // A C B E D I G K J F
+{
+    if(root == NULL) return;
+    Postorder(root->left);
+    Postorder(root->right);
+    printf("%c ", root->data);
+}
+```
+
+![bst preorder](img/bst-preorder.png)
+
+- Time complexity: O(n)
+- Space complexity: O(height) [worst: O(n), best/average: O(logn)]
+
+### 35) Check if a binary tree is binary search tree or not
+
+**Binary Search Tree** (BST) - a binary tree in which for each node, value pf all the nodes in left subtree is lesser (or equal) and value of all the nodes in right subtree is greater.
+
+![bst example](img/bst-example.png)
+
+```C++
+bool IsSubtreeLesser(Node* root, int value);
+
+bool IsSubtreeGreater(Node* root, int value)
+{
+    if(root == NULL) return true;
+    if(root->data > value)
+       && IsSubtreeGreater(root->left, value)
+       && IsSubtreeGreater(root->right, value))
+        return true;
+    else
+        return false;
+}
+
+bool IsBinarySearchTree(Node* root)
+{
+    if(root == NULL) return true;
+
+    if(IsSubtreeLesser(root->left, root->data)
+       && IsSubtreeGreater(root->right, root->data)
+       && IsBinarySearchTree(root->left)
+       && IsBinarySearchTree(root->right))
+        return true;
+    else
+        return false;
+}
+
+// time complexty - O(n²)
+```
+
+```C++
+// better way to do it
+bool IsBstUtil(Node* root, int minValue, int maxValue)
+{
+    if(root == NULL) return true;
+
+    if(root->data < minValue && root->data > maxValue
+       && IsBstUtil(root->left, minValue, root->data)
+       && IsBstUtil(root->right, root->data, maxValue))
+        return true;
+    else
+        return false;
+}
+
+bool IsBinarySeachTree(Node* root)
+{
+    return IsBstUtil(root, INT_MAX, INT_MIN);
+}
+
+// time complexity - O(n)
+```
+
+### 36) Delete a node from Binary Search Tree
+
+Deleting a node from BST:
+
+- case 1: no child;
+- case 2: one child;
+- case 3: 2 children.
+  - find min in right: copy the value in targetted node, delete duplicate from right-subtree;
+  - find max in left: copy the value in targetted node, delete duplicate from left-subtree;
+
+```C++
+struct Node* Delete(struct Node *root, int data)
+{
+    if(root == NULL) return root;
+    else if(data < root->data) root->left = Delete(root->left, data);
+    else if(data > root->data) root->right = Delete(root->right, data);
+    else
+    {
+        // Case 1: no child
+        if(root->left == NULL && root->right == NULL)
+        {
+            delete root;
+            root = NULL;
+        }
+        // Case 2: one child
+        else if(root->left == NULL)
+        {
+            struct Node *temp = root;
+            root = root->right;
+            delete temp;
+        }
+        else if(root->right == NULL)
+        {
+            struct Node *temp = root;
+            root = root->right;
+            delete temp;
+        }
+        // case 3: 2 children
+        else{
+            struct Node *temp = FindMin(root->right);
+            root->data = temp->data;
+            root->right = Delete(root->right, temp->data);
+        }
+    }
+    return root;
+}
+```
+
+### 37) Inorder Successor in a binary search tree
